@@ -1,4 +1,23 @@
 import { createApp } from 'vue'
+import { createRouter, createWebHistory } from 'vue-router';
 import App from './App.vue'
+import homepage from './components/homepage.vue'
+import content from './components/content.vue'
+import './assets/global.css'; // 或 './styles/global.css'
+import 'bootstrap/dist/css/bootstrap.min.css';
 
-createApp(App).mount('#app')
+const routes = [
+    { path: '/', component: homepage },
+    { path: '/:subId', component: content },
+]
+
+
+const router = createRouter({
+    history: createWebHistory(`/Hakka_ePaper/paper/paper${process.env.VUE_APP_PAPER_ID}`),
+    routes,
+});
+
+
+const app = createApp(App);
+app.use(router);
+app.mount('#app');
