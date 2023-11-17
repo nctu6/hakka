@@ -1,5 +1,6 @@
 import { createApp } from 'vue'
 import { createRouter, createWebHistory } from 'vue-router';
+import store from './store';
 import App from './App.vue'
 import homepage from './components/homepage.vue'
 import content from './components/content.vue'
@@ -8,7 +9,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 
 const routes = [
     { path: '/', component: homepage },
-    { path: '/:subId', component: content },
+    { path: `/${process.env.VUE_APP_PAPER_ID}-:subId`, component: content },
 ]
 
 
@@ -20,4 +21,5 @@ const router = createRouter({
 
 const app = createApp(App);
 app.use(router);
+app.use(store);
 app.mount('#app');

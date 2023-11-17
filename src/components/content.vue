@@ -1,40 +1,43 @@
 <template>
-  <div class="hello">
-      {{articleId}}
+  <div class="wrapper" v-if="isArticleReady">
+    <div class="container-area ">
+      <bannerTitle></bannerTitle>
+      <img class="top-banner-picture" :src="require(`@/assets/${articles[articleId - 1].coverPicture}`)">
+      <div v-for="(contentobj, index) in articles[articleId - 1].content" :key="index">
+        <div class="content-text m-4" v-if="contentobj.type === 'text'"> {{ contentobj.content }} </div>
+        <div v-else-if="contentobj.type === 'image'"><img class="img-block"
+            :src="require(`@/assets/${contentobj.content}`)"><br><br></div>
+        <div v-else-if="contentobj.type === 'caption'" class="cover-title">{{ contentobj.content }}<br><br></div>
+      </div>
+
+    </div>
   </div>
 </template>
 
 <script>
+import { parsingFunctionMixin } from '@/components/parsingFunction.js'
+
+import bannerTitle from '@/components/banner.vue'
 export default {
   name: 'ContentPage',
+  components: {
+    bannerTitle
+  },
   computed: {
     articleId() {
       return this.$route.params.subId;
-    }
+    },
+    isArticleReady() {
+      return this.articles[this.articleId - 1]?.coverPicture != null;
+    },
   },
-  data () {
-    return {
-        
-      msg: 'Welcome to Your Vue.js App'
-    }
-  }
+  mixins: [parsingFunctionMixin],
 }
 </script>
 
 <!-- Add "scoped" attribute to limit aCSS to this component only -->
 <style scoped>
-h3 {
-  margin: 40px 0 0;
-}
-ul {
-  list-style-type: none;
-  padding: 0;
-}
-li {
-  display: inline-block;
-  margin: 0 10px;
-}
-a {
-  color: #42b983;
+.content-text {
+  text-align: left;
 }
 </style>

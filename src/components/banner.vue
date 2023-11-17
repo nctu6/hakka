@@ -1,41 +1,26 @@
 <template>
-    <div class="hello">
-        {{articleId}}
-    </div>
-  </template>
+    <h1 class="title" v-on:click="this.$router.push('/')">
+        國立中央大學 客家學院 電子報
+    </h1>
+</template>
   
-  <script>
-  export default {
-    name: 'ContentPage',
-    computed: {
-      articleId() {
-        return this.$route.params.subId;
-      }
-    },
-    data () {
-      return {
-          
-        msg: 'Welcome to Your Vue.js App'
-      }
+<script>
+export default {
+    name: 'BannerTitle',
+    data() {
+        return {
+
+        }
     }
-  }
-  </script>
-  
-  <!-- Add "scoped" attribute to limit aCSS to this component only -->
-  <style scoped>
-  h3 {
-    margin: 40px 0 0;
-  }
-  ul {
-    list-style-type: none;
-    padding: 0;
-  }
-  li {
-    display: inline-block;
-    margin: 0 10px;
-  }
-  a {
-    color: #42b983;
-  }
-  </style>
+}
+</script>
+<style scoped>
+.title {
+    color: #1e1e1f;
+    font-size: 28px;
+    font-weight: bold;
+    text-align: left;
+    padding: 0.5em;
+}
+</style>
   
