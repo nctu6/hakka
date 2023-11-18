@@ -7,9 +7,14 @@
         <div class="content-text m-4" v-if="contentobj.type === 'text'"> {{ contentobj.content }} </div>
         <div v-else-if="contentobj.type === 'image'"><img class="img-block"
             :src="require(`@/assets/${contentobj.content}`)"><br><br></div>
-        <div v-else-if="contentobj.type === 'caption'" class="cover-title">{{ contentobj.content }}<br><br></div>
+        <div v-else-if="contentobj.type === 'caption'">{{ contentobj.content }}<br><br></div>
+        <div v-else-if="contentobj.type = 'video'">
+          <video width="640" height="480" controls>
+            <source :src="require(`@/assets/${contentobj.content}`)" type="video/mp4">
+            Your browser does not support the video tag.
+          </video>
+        </div>
       </div>
-
     </div>
   </div>
 </template>
@@ -39,5 +44,6 @@ export default {
 <style scoped>
 .content-text {
   text-align: left;
+  text-indent: 2em;
 }
 </style>

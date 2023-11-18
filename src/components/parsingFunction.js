@@ -60,13 +60,20 @@ export const parsingFunctionMixin = {
                     // 处理文章内容
                     const contentItems = [];
                     section.split('\n').forEach(line => {
-                        const imageMatch = line.match(/圖片：\s*(image\d+-\d+\.jpg)(?:\s*\((.*?)\))?/);
-                        if (imageMatch) {
-                            contentItems.push({ type: 'image', content: imageMatch[1].trim() });
-                            if (imageMatch[2]) {
-                                contentItems.push({ type: 'caption', content: imageMatch[2].trim() });
+                        const mediaMatch = line.match(/(圖片|影片)：\s*([\w-]+\.(jpg|jpeg|png|gif|bmp|wav|mp4|avi|mov|mpeg|mpg))(?:\s*\((.*?)\))?/
+                        );
+                        if (mediaMatch) {
+                            const type = mediaMatch[1] === '圖片' ? 'image' : 'video';
+                            const filename = mediaMatch[2];
+                            const description = mediaMatch[4] ? mediaMatch[4].trim() : '';
+
+                            contentItems.push({ type: type, content: filename });
+
+                            if (description) {
+                                contentItems.push({ type: 'caption', content: description });
                             }
-                        } else if (line.trim() !== '') {
+                        }
+                        else if (line.trim() !== '') {
                             contentItems.push({ type: 'text', content: line.trim() });
                         }
                     });
