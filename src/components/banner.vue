@@ -22,5 +22,12 @@ export default {
     text-align: left;
     padding: 0.5em;
 }
+
+@media screen and (max-width:736px) {
+    .title {
+        text-align: center;
+        font-size: 20px;
+    }
+}
 </style>
   

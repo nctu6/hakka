@@ -14,11 +14,11 @@
                 </div>
             </div>
             <div class="row m-3" v-for="(article, index) in articles" :key="index">
-                <div class="col-sm-12 col-md-6">
+                <div class="col-sm-11 col-md-6 tl-left">
                     <img :src="require(`@/assets/${article.coverPicture}`)" class="img-block" alt="...">
                 </div>
 
-                <div class="col-sm-12 col-md-6 cover-container">
+                <div class="col-sm-11 col-md-6 tl-left">
                     <h6 class="cover-author">{{ article.coverAuthor }}</h6>
                     <h4 class="cover-title">{{ article.title }}</h4>
                     <div v-for="(content, index) in article.coverContent" :key="index">
@@ -34,6 +34,8 @@
 <style>
 .top-banner-picture {
     width: 100%;
+    height: auto;
+    display: block;
 }
 
 .banner-date {
@@ -44,7 +46,7 @@
 }
 
 .container-area {
-    width: 800px;
+    max-width: 800px;
     margin: 0 auto;
     background-color: white;
     text-align: center;
@@ -70,7 +72,7 @@
     text-transform: capitalize;
 }
 
-.cover-container {
+.tl-left {
     text-align: left;
 }
 
