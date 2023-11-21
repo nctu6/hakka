@@ -16,6 +16,12 @@ const routes = [
 const router = createRouter({
     history: createWebHistory(`/Hakka_ePaper/paper/paper${process.env.VUE_APP_PAPER_ID}`),
     routes,
+    scrollBehavior (to, from, savedPosition) {
+        if (savedPosition) {
+            return savedPosition;
+        }
+        return { left: 0, top: 0};
+    }
 });
 
 

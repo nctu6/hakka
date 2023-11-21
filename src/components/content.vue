@@ -2,19 +2,36 @@
   <div class="wrapper" v-if="isArticleReady">
     <div class="container-area ">
       <bannerTitle></bannerTitle>
-      <img class="top-banner-picture" :src="require(`@/assets/${articles[articleId - 1].coverPicture}`)">
+      <img v-if="articles[articleId - 1].coverPicture" class="top-banner-picture" :src="require(`@/assets/${articles[articleId - 1].coverPicture}`)">
+      <img v-else class="top-banner-picture" :src="require(`@/assets/BOT.jpg`)">
+
+      <div class="content-head">
+        <h2 class="content-title">{{ articles[articleId - 1].title }}</h2><br>
+        <h4 class="content-author">{{ articles[articleId - 1].author }}</h4><br>
+        <div v-if="articles[articleId - 1].audio">  
+          <audio controls autoplay>
+            <source :src="require(`@/assets/${articles[articleId - 1].audio}`)">
+            Your browser does not support the audio element.
+          </audio>
+        </div>
+        <div v-if="articles[articleId - 1].audioAuthor">
+          <a style="color:gray" >發音人：{{ articles[articleId - 1].audioAuthor }}</a>
+        </div>
+      </div>
       <div v-for="(contentobj, index) in articles[articleId - 1].content" :key="index">
-        <div class="content-text m-4" v-if="contentobj.type === 'text'"> {{ contentobj.content }} </div>
-        <div v-else-if="contentobj.type === 'image'"><img class="img-block"
-            :src="require(`@/assets/${contentobj.content}`)"><br><br></div>
-        <div v-else-if="contentobj.type === 'caption'">{{ contentobj.content }}<br><br></div>
-        <div v-else-if="contentobj.type = 'video'">
+        <div class="content-text" v-if="contentobj.type === 'text'"> {{ contentobj.content }} </div>
+        <div class="mb-3" v-else-if="contentobj.type === 'image'"><img class="img-block"
+            :src="require(`@/assets/${contentobj.content}`)"></div>
+        <div class="mb-3" v-else-if="contentobj.type === 'caption'">{{ contentobj.content }}</div>
+        <div class="mb-3" v-else-if="contentobj.type === 'video'">
           <video width="640" height="480" controls>
             <source :src="require(`@/assets/${contentobj.content}`)" type="video/mp4">
             Your browser does not support the video tag.
           </video>
         </div>
       </div>
+      <backToFP></backToFP>
+      <bannerBottom></bannerBottom>
     </div>
   </div>
 </template>
@@ -23,10 +40,14 @@
 import { parsingFunctionMixin } from '@/components/parsingFunction.js'
 
 import bannerTitle from '@/components/banner.vue'
+import backToFP from '@/components/backBtn.vue'
+import bannerBottom from '@/components/bannerBottom.vue'
 export default {
   name: 'ContentPage',
   components: {
-    bannerTitle
+    bannerTitle,
+    backToFP,
+    bannerBottom
   },
   computed: {
     articleId() {
@@ -37,6 +58,9 @@ export default {
     },
   },
   mixins: [parsingFunctionMixin],
+  mounted(){
+    if(this.articleId>this.articles.length) this.$router.push('/');
+  }
 }
 </script>
 
@@ -45,5 +69,21 @@ export default {
 .content-text {
   text-align: left;
   text-indent: 2em;
+  margin: 10px 24px;
+}
+
+.content-head {
+  margin: 50px 0px;
+}
+
+.content-title {
+  font-weight: bold;
+  font-size: 24px;
+  color:#be369b;
+}
+
+.content-author {
+  font-weight: bold;
+  font-size: 16px;
 }
 </style>

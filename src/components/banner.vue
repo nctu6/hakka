@@ -20,7 +20,8 @@ export default {
     font-size: 28px;
     font-weight: bold;
     text-align: left;
-    padding: 0.5em;
+    padding: 0.5em 1em;
+    margin: 0px;
 }
 
 @media screen and (max-width:736px) {
