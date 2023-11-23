@@ -15,7 +15,8 @@
             </div>
             <div class="row cover-content" v-for="(article, index) in articles" :key="index">
                 <div class="col-sm-11 col-md-6 tl-left">
-                    <img :src="require(`@/assets/${article.coverPicture}`)" class="img-block" alt="...">
+                    <img v-if="article.coverPicture" :src="require(`@/assets/${article.coverPicture}`)" class="img-block" alt="...">
+                    <img v-else class="img-block" :src="require(`@/assets/BOT.jpg`)" alt="...">
                 </div>
 
                 <div class="col-sm-11 col-md-6 tl-left align-items-center d-flex">

@@ -11,6 +11,18 @@ export const parsingFunctionMixin = {
     },
     methods:
     {
+        formatTextAndUrl(text) {
+            const urlRegex = /(https?:\/\/[^\s]+)/;
+            let parts = text.split(urlRegex).filter(part => part);
+            return parts.map(part => {
+                return {
+                    type: urlRegex.test(part) ? 'link' : 'text',
+                    content: part
+                };
+            });
+        },
+
+
         extractContent(section, delimiter) {
             const parts = section.split(delimiter);
             if (parts.length < 2) {
@@ -74,7 +86,17 @@ export const parsingFunctionMixin = {
                             }
                         }
                         else if (line.trim() !== '') {
-                            contentItems.push({ type: 'text', content: line.trim() });
+                            var content = line.trim();
+                            content = this.formatTextAndUrl(content);
+                            contentItems.push({ type: "text", content: content });
+
+                            //     content.split('http').forEach(
+                            //         c=> {
+
+                            //         }
+                            //     )
+                            //     contentItems.push({ type: 'text', content: line.trim() });
+                            // }
                         }
                     });
                     oneArticle.content = contentItems;

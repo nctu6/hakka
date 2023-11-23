@@ -10,5 +10,17 @@ module.exports = defineConfig({
       .use('raw-loader')
         .loader('raw-loader')
         .end();
+
+    config.module
+      .rule('m4a')
+      .test(/\.m4a$/)
+      .use('file-loader')
+        .loader('file-loader')
+        .options({
+          esModule: false,
+          name: '[name].[ext]',
+          outputPath: 'audio/', // 音频文件的输出目录
+        })
+        .end();
   }
 })
