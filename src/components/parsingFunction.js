@@ -13,12 +13,21 @@ export const parsingFunctionMixin = {
     {
         formatTextAndUrl(text) {
             const urlRegex = /(https?:\/\/[^\s]+)/;
-            let parts = text.split(urlRegex).filter(part => part);
+            // const emailRegex = /^\w+((-\w+)|(\.\w+))*@[A-Za-z0-9]+((\.|-)[A-Za-z0-9]+)*\.[A-Za-z]+$/; // eslint-disable-line
+            const emailRegex = /(\b[A-Za-z0-9._%+-]+[@＠][A-Za-z0-9.-]+\.[A-Z|a-z]{2,}\b)/;
+            let parts = text.split(new RegExp(`${urlRegex.source}|${emailRegex.source}`)).filter(part => part);
             return parts.map(part => {
-                return {
-                    type: urlRegex.test(part) ? 'link' : 'text',
-                    content: part
-                };
+                if (urlRegex.test(part)) {
+                    return { type: 'link', content: part };
+                } else if (emailRegex.test(part)) {
+                    return { type: 'email', content: part };
+                } else {
+                    return { type: 'text', content: part };
+                }
+                // return {
+                //     type: urlRegex.test(part) ? 'link' : 'text',
+                //     content: part
+                // };
             });
         },
 
@@ -85,8 +94,8 @@ export const parsingFunctionMixin = {
                                 contentItems.push({ type: 'caption', content: description });
                             }
                         }
-                        else if (line.trim() !== '') {
-                            var content = line.trim();
+                        else {
+                            var content = line;
                             content = this.formatTextAndUrl(content);
                             contentItems.push({ type: "text", content: content });
 
@@ -98,6 +107,9 @@ export const parsingFunctionMixin = {
                             //     contentItems.push({ type: 'text', content: line.trim() });
                             // }
                         }
+                        // else {
+                        //     contentItems.push({ type: "text", content: " "});
+                        // }
                     });
                     oneArticle.content = contentItems;
                     this.articles.push(oneArticle);

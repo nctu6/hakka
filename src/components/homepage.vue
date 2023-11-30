@@ -65,6 +65,7 @@
     height: 230px;
     overflow: hidden;
     border-radius: 2%;
+    object-fit: cover;
 }
 
 .continue-reading {

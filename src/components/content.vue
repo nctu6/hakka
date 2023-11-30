@@ -22,12 +22,13 @@
       <div v-for="(contentobj, index) in articles[articleId - 1].content" :key="index">
         <div class="content-text" v-if="contentobj.type === 'text'">
           <span v-for="(subContent, subIndex) in contentobj.content" :key="subIndex">
-            <span v-if="subContent.type == 'text'"> {{ subContent.content }}</span>
-            <a v-if="subContent.type == 'link'" :href="subContent.content" target="_blank">{{subContent.content}}</a>
+            <span class="preserve-whitespace" v-if="subContent.type == 'text'"> {{ subContent.content }}</span>
+            <a v-if="subContent.type == 'link'" :href="subContent.content" target="_blank">{{ subContent.content }}</a>
+            <a v-if="subContent.type == 'email'" :href="'mailto:'+subContent.content">{{ subContent.content }}</a>
           </span>
         </div>
         <div class="mb-3" v-else-if="contentobj.type === 'image'">
-          <img class="img-block" :src="require(`@/assets/${contentobj.content}`)">
+          <img class="content-img" :src="require(`@/assets/${contentobj.content}`)">
         </div>
         <div class="mb-3" v-else-if="contentobj.type === 'caption'">{{ contentobj.content }}</div>
         <div class="mb-3" v-else-if="contentobj.type === 'video'">
@@ -77,6 +78,7 @@ export default {
   text-align: left;
   text-indent: 2em;
   margin: 10px 24px;
+  min-height: 20px;
 }
 
 .content-head {
@@ -92,5 +94,16 @@ export default {
 .content-author {
   font-weight: bold;
   font-size: 16px;
+}
+
+.content-img {
+  height: auto;
+  margin: 0 auto 0em;
+  display: block;
+  width: 65%;
+}
+
+.preserve-whitespace {
+    white-space: pre-wrap;
 }
 </style>
