@@ -68,7 +68,12 @@ export default {
   mixins: [parsingFunctionMixin],
   mounted() {
     if (this.articleId > this.articles.length) this.$router.push('/');
-  }
+  },
+  beforeRouteLeave(to, from, next) {
+    // 保存滚动位置
+    from.meta.savedPosition = window.scrollY;
+    next();
+  },
 }
 </script>
 

@@ -1,8 +1,11 @@
 <template>
     <div class="back-div">
-        <router-link :to="'/'" class="back-btn">
+        <button @click="goBack" class="back-btn">
             返回上頁
-        </router-link>
+        </button>
+        <!-- <router-link :to="'/'" class="back-btn">
+            返回上頁
+        </router-link> -->
     </div>
 </template>
   
@@ -13,6 +16,11 @@ export default {
         return {
         }
     },
+    methods: {
+        goBack() {
+            this.$router.go(-1); // 返回上一个页面
+        }
+    }
 }
 </script>
 <style scoped>
