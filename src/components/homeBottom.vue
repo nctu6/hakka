@@ -1,10 +1,10 @@
 <template>
     <div bordercolor="#FFFFFF" class="tl-left cover-content" style="color:#be369b;">
         <p><span class="bottom-text " >其他：藝文活動、客家新聞彙編等精彩內容，</span>
-            <a style="color:#be369b" href="`http://hakka.ncu.edu.tw/Hakka_ePaper/paper/paper${paperId}/${paperId}.pdf`">[請點此處]</a></p>
+            <a style="color:#be369b" :href="`http://hakka.ncu.edu.tw/Hakka_ePaper/paper/paper${paperId}/${paperId}.pdf`">[請點此處]</a></p>
         <p>
             <span class="bottom-text">閱讀客語文章，建議先安裝<a style="color:#be369b" href="http://language.moe.gov.tw/result.aspx?classify_sn=42&amp;subclassify_sn=447&amp;thirdclassify_sn=479">教育部最新客家語拼音輸入法(1.2.90版)</a>，或直接</span>
-            <a style="color:#be369b" href="`http://hakka.ncu.edu.tw/Hakka_ePaper/paper/paper${paperId}/${paperId}.pdf`">[請點此處]</a><span class="bottom-text">閱讀PDF檔。</span></p>
+            <a style="color:#be369b" :href="`http://hakka.ncu.edu.tw/Hakka_ePaper/paper/paper${paperId}/${paperId}.pdf`">[請點此處]</a><span class="bottom-text">閱讀PDF檔。</span></p>
     </div>
     <br>
     <br>

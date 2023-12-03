@@ -1,6 +1,6 @@
 <template>
     <div class="w3l bottom-picture">
-        <div class="overlay-w3l">
+        <div class="overlay-w3l mid-content">
             <p class="bottom-para">
                 <a > ◆ 發行單位&emsp;／	國立中央大學客家學院</a> <br>
                 <a > ◆ 榮譽發行人／	周景揚校長</a> <br>
@@ -28,11 +28,11 @@
     <div class="bottom-subscribe">
         <a href="https://epaper.ncu.edu.tw/subscribe?pid=46" target="_blank"><b>訂閱本報</b></a>
         <div class="sub-gd">
-            <a href="`http://www.facebook.com/sharer.php?u=http://hakka.ncu.edu.tw/Hakka_ePaper/paper/paper${paperId}`"
+            <a :href="`http://www.facebook.com/sharer.php?u=http://hakka.ncu.edu.tw/Hakka_ePaper/paper/paper${paperId}`"
                 class="icon-social"><img src="http://hakka.ncu.edu.tw/Hakka_ePaper/paper/social/facebook512.png" alt="Facebook" width="30" height="30"></a>
-            <a href="`http://twitter.com/share?url=http://hakka.ncu.edu.tw/Hakka_ePaper/paper/paper{paperId}`"
+            <a :href="`http://twitter.com/share?url=http://hakka.ncu.edu.tw/Hakka_ePaper/paper/paper${paperId}`"
                 class="icon-social"><img src="http://hakka.ncu.edu.tw/Hakka_ePaper/paper/social/twitter512.png" alt="twitter" width="30" height="30"></a>
-            <a href="`http://line.naver.jp/R/msg/text/?http://hakka.ncu.edu.tw/Hakka_ePaper/paper/paper{paperId}`"
+            <a :href="`http://line.naver.jp/R/msg/text/?http://hakka.ncu.edu.tw/Hakka_ePaper/paper/paper${paperId}`"
                 class="icon-social"><img src="http://hakka.ncu.edu.tw/Hakka_ePaper/paper/social/line512.png" alt="line" width="30" height="30"></a>
         </div>
         <hr>
@@ -103,6 +103,10 @@ export default {
 }
 
 @media screen and (max-width:736px) {
+    .mid-content {
+        width: auto;
+        margin: 0px;
+    }
 }
 </style>
   
