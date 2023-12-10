@@ -23,6 +23,7 @@
         <div class="content-text" v-if="contentobj.type === 'text'">
           <span v-for="(subContent, subIndex) in contentobj.content" :key="subIndex">
             <span class="preserve-whitespace" v-if="subContent.type == 'text'"> {{ subContent.content }}</span>
+            <span class="preserve-whitespace" v-if="subContent.type == 'hashTag'"> <strong>{{ subContent.content }}</strong></span>
             <a v-if="subContent.type == 'link'" :href="subContent.content" target="_blank">{{ subContent.content }}</a>
             <a v-if="subContent.type == 'email'" :href="'mailto:'+subContent.content">{{ subContent.content }}</a>
           </span>

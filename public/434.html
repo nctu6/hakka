@@ -1,9 +1,4 @@
-require('dotenv').config();
-const fs = require('fs');
-const path = require('path');
-
-const createRedirectPage = () => {
-  return `<!DOCTYPE html>
+<!DOCTYPE html>
 <html>
 <head>
     <meta charset="UTF-8">
@@ -28,14 +23,4 @@ const createRedirectPage = () => {
 <body>
     <p>Redirecting... <a href="/">Click here if you are not redirected.</a></p>
 </body>
-</html>`;
-};
-
-const mainDirectory = 'public/'; // 將路徑設置為public資料夾下的paper4000
-const subPageCount = process.env.VUE_APP_PAPER_COUNT; // 根據需要生成的子頁面數量進行調整
-console.log(subPageCount)
-// for (let i = 1; i <= subPageCount; i++) {
-  const subPageName = `public/${process.env.VUE_APP_PAPER_ID}.html`;
-  fs.writeFileSync(subPageName, createRedirectPage());
-  console.log(`Redirect page created for /${mainDirectory}/${subPageName}`);
-// }
+</html>

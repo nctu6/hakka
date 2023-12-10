@@ -15,12 +15,15 @@ export const parsingFunctionMixin = {
             const urlRegex = /(https?:\/\/[^\s]+)/;
             // const emailRegex = /^\w+((-\w+)|(\.\w+))*@[A-Za-z0-9]+((\.|-)[A-Za-z0-9]+)*\.[A-Za-z]+$/; // eslint-disable-line
             const emailRegex = /(\b[A-Za-z0-9._%+-]+[@＠][A-Za-z0-9.-]+\.[A-Z|a-z]{2,}\b)/;
-            let parts = text.split(new RegExp(`${urlRegex.source}|${emailRegex.source}`)).filter(part => part);
+            const hashTagRegex = /(#[^#]+#)/;
+            let parts = text.split(new RegExp(`${urlRegex.source}|${emailRegex.source}|${hashTagRegex.source}`)).filter(part => part);
             return parts.map(part => {
                 if (urlRegex.test(part)) {
                     return { type: 'link', content: part };
                 } else if (emailRegex.test(part)) {
                     return { type: 'email', content: part };
+                } else if (hashTagRegex.test(part)) {
+                    return {type: 'hashTag', content: part.slice(1, -1) };
                 } else {
                     return { type: 'text', content: part };
                 }
