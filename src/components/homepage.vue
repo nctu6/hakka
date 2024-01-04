@@ -6,6 +6,9 @@
             <div class="row banner-date">
                 <div class="col-sm-12 col-md-9">
                     <span style="font-size:9pt">NCU HAKKA COLLEGE E-PAPER 第{{ paperId }}期{{ publishedDate }} 出刊／ 半月刊</span>
+                    <!-- 使用 HTML 字符實體 -->
+                    <p style="font-family: 'Huninn';">Heart Symbol: &#178374; or &#x2B8C6; or &#131726; or &#x2028E; or &#25678; or &#x644E;</p>
+
                 </div>
                 <div class="col-sm-12 col-md-3">
                     <span>瀏覽人次：</span>
@@ -39,6 +42,11 @@
     </div>
 </template>
 <style>
+@font-face {
+    font-family: 'Huninn';
+    src: url('../fonts/jf-openhuninn-2.0.ttf') format("truetype");
+}
+
 .top-banner-picture {
     width: 100%;
     height: auto;
@@ -61,8 +69,8 @@
 }
 
 .img-block {
-    width: 325px;
-    height: 230px;
+    width: 280px;
+    height: 280px;
     overflow: hidden;
     border-radius: 2%;
     object-fit: cover;

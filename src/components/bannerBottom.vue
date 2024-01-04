@@ -28,11 +28,17 @@
     <div class="bottom-subscribe">
         <a href="https://epaper.ncu.edu.tw/subscribe?pid=46" target="_blank"><b>訂閱本報</b></a>
         <div class="sub-gd">
-            <a :href="`http://www.facebook.com/sharer.php?u=http://hakka.ncu.edu.tw/Hakka_ePaper/paper/paper${paperId}`"
+            <a v-if="pathId == '/'" :href="`http://www.facebook.com/sharer.php?u=http://hakka.ncu.edu.tw/Hakka_ePaper/paper/paper${paperId}`"
                 class="icon-social"><img src="http://hakka.ncu.edu.tw/Hakka_ePaper/paper/social/facebook512.png" alt="Facebook" width="30" height="30"></a>
-            <a :href="`http://twitter.com/share?url=http://hakka.ncu.edu.tw/Hakka_ePaper/paper/paper${paperId}`"
+            <a v-else :href="`http://www.facebook.com/sharer.php?u=http://hakka.ncu.edu.tw/Hakka_ePaper/paper/paper${paperId}${pathId}`"
+                class="icon-social"><img src="http://hakka.ncu.edu.tw/Hakka_ePaper/paper/social/facebook512.png" alt="Facebook" width="30" height="30"></a>
+            <a v-if="pathId == '/'" :href="`http://twitter.com/share?url=http://hakka.ncu.edu.tw/Hakka_ePaper/paper/paper${paperId}`"
                 class="icon-social"><img src="http://hakka.ncu.edu.tw/Hakka_ePaper/paper/social/twitter512.png" alt="twitter" width="30" height="30"></a>
-            <a :href="`http://line.naver.jp/R/msg/text/?http://hakka.ncu.edu.tw/Hakka_ePaper/paper/paper${paperId}`"
+            <a v-else :href="`http://twitter.com/share?url=http://hakka.ncu.edu.tw/Hakka_ePaper/paper/paper${paperId}${pathId}`"
+                class="icon-social"><img src="http://hakka.ncu.edu.tw/Hakka_ePaper/paper/social/twitter512.png" alt="twitter" width="30" height="30"></a>
+            <a v-if="pathId == '/'" :href="`http://line.naver.jp/R/msg/text/?http://hakka.ncu.edu.tw/Hakka_ePaper/paper/paper${paperId}`"
+                class="icon-social"><img src="http://hakka.ncu.edu.tw/Hakka_ePaper/paper/social/line512.png" alt="line" width="30" height="30"></a>
+            <a v-else :href="`http://line.naver.jp/R/msg/text/?http://hakka.ncu.edu.tw/Hakka_ePaper/paper/paper${paperId}${pathId}`"
                 class="icon-social"><img src="http://hakka.ncu.edu.tw/Hakka_ePaper/paper/social/line512.png" alt="line" width="30" height="30"></a>
         </div>
         <hr>
@@ -45,6 +51,11 @@
 <script>
 export default {
     name: 'BannerBottom',
+    computed: {
+        pathId() {
+            return this.$route.path;
+        },
+    },
     data() {
         return {
             paperId: process.env.VUE_APP_PAPER_ID
