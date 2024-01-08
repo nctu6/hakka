@@ -7,7 +7,7 @@
                 <div class="col-sm-12 col-md-9">
                     <span style="font-size:9pt">NCU HAKKA COLLEGE E-PAPER 第{{ paperId }}期{{ publishedDate }} 出刊／ 半月刊</span>
                     <!-- 使用 HTML 字符實體 -->
-                    <p style="font-family: 'Huninn';">Heart Symbol: &#178374; or &#x2B8C6; or &#131726; or &#x2028E; or &#25678; or &#x644E;</p>
+                    <!-- <p style="font-family: 'Huninn';">Heart Symbol: &#178374; or &#x2B8C6; or &#131726; or &#x2028E; or &#25678; or &#x644E;</p> -->
 
                 </div>
                 <div class="col-sm-12 col-md-3">
