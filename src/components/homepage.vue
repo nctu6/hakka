@@ -42,9 +42,13 @@
     </div>
 </template>
 <style>
-@font-face {
+/* @font-face {
     font-family: 'Huninn';
     src: url('../fonts/jf-openhuninn-2.0.ttf') format("truetype");
+} */
+@font-face {
+    font-family: 'GenSeki';
+    src: url('../fonts/GenSekiGothicJP-M-02.ttf') format("truetype");
 }
 
 .top-banner-picture {
@@ -66,6 +70,8 @@
     margin: 0 auto;
     background-color: white;
     text-align: center;
+    position: relative;
+    z-index: 10;
 }
 
 .img-block {
