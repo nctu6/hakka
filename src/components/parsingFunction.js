@@ -12,7 +12,7 @@ export const parsingFunctionMixin = {
     methods:
     {
         formatTextAndUrl(text) {
-            const urlRegex = /(https?:\/\/[^\s]+)/;
+            const urlRegex = /(https?:\/\/[^\s,，。！？；：）)]+)/;
             // const emailRegex = /^\w+((-\w+)|(\.\w+))*@[A-Za-z0-9]+((\.|-)[A-Za-z0-9]+)*\.[A-Za-z]+$/; // eslint-disable-line
             const emailRegex = /(\b[A-Za-z0-9._%+-]+[@＠][A-Za-z0-9.-]+\.[A-Z|a-z]{2,}\b)/;
             const hashTagRegex = /(#[^#]+#)/;
@@ -84,17 +84,25 @@ export const parsingFunctionMixin = {
                     // 处理文章内容
                     const contentItems = [];
                     section.split('\n').forEach(line => {
-                        const mediaMatch = line.match(/(圖片|影片)：\s*([\w-]+\.(jpg|jpeg|png|gif|bmp|wav|mp4|avi|mov|mpeg|mpg))(?:\s*\((.*?)\))?/
+                        const mediaMatch = line.match(/(圖片|影片)：\s*([\w-]+\.(jpg|jpeg|png|gif|bmp|wav|mp4|avi|mov|mpeg|mpg))(?:\s*([（(].*[)）]))?/
                         );
                         if (mediaMatch) {
                             const type = mediaMatch[1] === '圖片' ? 'image' : 'video';
                             const filename = mediaMatch[2];
-                            const description = mediaMatch[4] ? mediaMatch[4].trim() : '';
+                            let description = mediaMatch[4] ? mediaMatch[4].trim().substring(1, mediaMatch[4].length - 1) : '';
 
                             contentItems.push({ type: type, content: filename });
 
                             if (description) {
-                                contentItems.push({ type: 'caption', content: description });
+                                // 检查description是否被#包围，并提取内容
+                                const hashTagMatch = description.match(/^#(.+)#$/);
+                                if (hashTagMatch) {
+                                    description = hashTagMatch[1];
+                                    // 如果description被#包围，提取被#包围的内容
+                                    contentItems.push({ type: 'captionStrong', content: description });
+                                } else {
+                                    contentItems.push({ type: 'caption', content: description });
+                                }
                             }
                         }
                         else {

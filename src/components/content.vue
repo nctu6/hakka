@@ -12,6 +12,10 @@
         <div v-if="articles[articleId - 1].audio">
           <audio controls autoplay>
             <source :src="require(`@/assets/${articles[articleId - 1].audio}`)" type="audio/mp4">
+            <source :src="require(`@/assets/${articles[articleId - 1].audio}`)" type="audio/wav">
+            <source :src="require(`@/assets/${articles[articleId - 1].audio}`)" type="audio/m4a">
+            <source :src="require(`@/assets/${articles[articleId - 1].audio}`)" type="audio/aac">
+            <source :src="require(`@/assets/${articles[articleId - 1].audio}`)" type="audio/mpeg">
             Your browser does not support the audio element.
           </audio>
         </div>
@@ -31,7 +35,8 @@
         <div class="mb-3" v-else-if="contentobj.type === 'image'">
           <img class="content-img" :src="require(`@/assets/${contentobj.content}`)">
         </div>
-        <div class="mb-3" v-else-if="contentobj.type === 'caption'">{{ contentobj.content }}</div>
+        <div class="content-text" v-else-if="contentobj.type === 'caption'">{{ contentobj.content }}</div>
+        <div class="content-text" v-else-if="contentobj.type === 'captionStrong'"><strong>{{ contentobj.content }}</strong></div>
         <div class="mb-3" v-else-if="contentobj.type === 'video'">
           <video width="640" height="480" controls>
             <source :src="require(`@/assets/${contentobj.content}`)" type="video/mp4">
