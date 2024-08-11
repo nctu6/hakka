@@ -38,17 +38,7 @@ export const parsingFunctionMixin = {
         },
         
         getCorrectFileName(fileName) {
-            if (fileName.includes('.')) {
-                return fileName;
-            }
-            
-            const correctFileName = this.assetMap.get(fileName);
-            if (correctFileName) {
-                return correctFileName;
-            } else {
-                console.warn(`No matching file found for: ${fileName}`);
-                return fileName;
-            }
+            return this.assetMap.get(fileName) || fileName;
         },
         
         async loadAndParseContent() {
