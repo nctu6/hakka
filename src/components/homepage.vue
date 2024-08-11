@@ -140,9 +140,7 @@ export default {
         bannerBottom
     },
     mixins: [parsingFunctionMixin],
-    mounted() {
-        this.loadAndParseContent();
-    },
+   
     data() {
         return {
             paperId: process.env.VUE_APP_PAPER_ID,

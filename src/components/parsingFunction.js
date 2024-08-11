@@ -7,12 +7,12 @@ export const parsingFunctionMixin = {
             assetMap: new Map()
         }
     },
-    created() {
+    async created() {
         this.initAssetMap();
+        await this.loadAndParseContent();
     },
     methods: {
         initAssetMap() {
-            console.log("Initializing asset map...");
             try {
                 const imgContext = require.context('../assets/', false, /\.(jpg|jpeg|png|gif|svg)$/);
                 const audioContext = require.context('../assets/', false, /\.(mp3|wav|ogg|m4a|mp4)$/);
@@ -27,7 +27,7 @@ export const parsingFunctionMixin = {
                     this.assetMap.set(this.getFileNameWithoutExtension(fileName), fileName);
                 });
                 
-                console.log("Asset map initialized:", this.assetMap);
+                //console.log("Asset map initialized:", this.assetMap);
             } catch (error) {
                 console.error("Error initializing asset map:", error);
             }
@@ -38,15 +38,12 @@ export const parsingFunctionMixin = {
         },
         
         getCorrectFileName(fileName) {
-            console.log(`Trying to get correct file name for: ${fileName}`);
             if (fileName.includes('.')) {
-                console.log(`File name already has extension: ${fileName}`);
                 return fileName;
             }
             
             const correctFileName = this.assetMap.get(fileName);
             if (correctFileName) {
-                console.log(`Found correct file name: ${correctFileName}`);
                 return correctFileName;
             } else {
                 console.warn(`No matching file found for: ${fileName}`);
@@ -55,10 +52,8 @@ export const parsingFunctionMixin = {
         },
         
         async loadAndParseContent() {
-            console.log("Loading and parsing content...");
             try {
                 let content = await this.fixFileExtensions(originContent);
-                console.log("Fixed content:", content);
                 this.parseContent(content);
             } catch (error) {
                 console.error('Error parsing content:', error);
@@ -66,27 +61,22 @@ export const parsingFunctionMixin = {
         },
         
         async fixFileExtensions(content) {
-            console.log("Fixing file extensions...");
             const lines = content.split('\n');
             const fixedLines = lines.map(line => {
-                console.log("Processing line:", line);
                 const match = line.match(/(圖片|音檔)：\s*(.+?)(?=\s*$)/);
                 if (match) {
                     const [fullMatch, type, fileName] = match;
-                    console.log(`Matched: type=${type}, fileName=${fileName}`);
                     const trimmedFileName = fileName.trim();
                     const fixedFileName = this.getCorrectFileName(trimmedFileName);
-                    console.log(`${type}: ${trimmedFileName} -> ${fixedFileName}`);
                     if (trimmedFileName !== fixedFileName) {
                         const newLine = line.replace(fullMatch, `${type}：${fixedFileName}`);
-                        console.log("Line replaced:", newLine);
                         return newLine;
                     }
                 }
                 return line;
             });
             const result = fixedLines.join('\n');
-            console.log("Fixed content result:", result);
+            //console.log("Fixed content result:", result);
             return result;
         },
         parseContent(content) {

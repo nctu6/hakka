@@ -52,7 +52,7 @@
 
 <script>
 import { parsingFunctionMixin } from '@/components/parsingFunction.js'
-
+import { toRaw } from 'vue'
 import bannerTitle from '@/components/banner.vue'
 import backToFP from '@/components/backBtn.vue'
 import bannerBottom from '@/components/bannerBottom.vue'
@@ -70,10 +70,27 @@ export default {
     isArticleReady() {
       return this.articles[this.articleId - 1]?.coverPicture != null;
     },
+
+  },
+  watch: {
+    articles: {
+      handler(newVal) {
+        const rawArticles = toRaw(newVal); // 這是Vue3 articles被判定成Proxy的物件時，要先轉型成原始物件，不然直接.length會得到0
+        if (Array.isArray(rawArticles) && rawArticles.length > 0) {
+          this.checkArticles();
+        }
+      },
+      deep: true,
+      immediate: true
+    }
   },
   mixins: [parsingFunctionMixin],
-  mounted() {
-    if (this.articleId > this.articles.length) this.$router.push('/');
+  methods: {
+    checkArticles() {
+      if (this.articleId > this.articles.length) {
+        this.$router.push('/')
+      }
+    },
   },
   beforeRouteLeave(to, from, next) {
     // 保存滚动位置
@@ -115,6 +132,6 @@ export default {
 }
 
 .preserve-whitespace {
-    white-space: pre-wrap;
+  white-space: pre-wrap;
 }
 </style>
