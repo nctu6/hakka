@@ -4,47 +4,93 @@ export const parsingFunctionMixin = {
     data() {
         return {
             articles: [],
+            assetMap: new Map()
         }
     },
-    mounted() {
-        this.parseOriginContent();
+    created() {
+        this.initAssetMap();
     },
-    methods:
-    {
-        formatTextAndUrl(text) {
-            const urlRegex = /(https?:\/\/[^\s,，。！？；：）)]+)/;
-            // const emailRegex = /^\w+((-\w+)|(\.\w+))*@[A-Za-z0-9]+((\.|-)[A-Za-z0-9]+)*\.[A-Za-z]+$/; // eslint-disable-line
-            const emailRegex = /(\b[A-Za-z0-9._%+-]+[@＠][A-Za-z0-9.-]+\.[A-Z|a-z]{2,}\b)/;
-            const hashTagRegex = /(#[^#]+#)/;
-            let parts = text.split(new RegExp(`${urlRegex.source}|${emailRegex.source}|${hashTagRegex.source}`)).filter(part => part);
-            return parts.map(part => {
-                if (urlRegex.test(part)) {
-                    return { type: 'link', content: part };
-                } else if (emailRegex.test(part)) {
-                    return { type: 'email', content: part };
-                } else if (hashTagRegex.test(part)) {
-                    return {type: 'hashTag', content: part.slice(1, -1) };
-                } else {
-                    return { type: 'text', content: part };
-                }
-                // return {
-                //     type: urlRegex.test(part) ? 'link' : 'text',
-                //     content: part
-                // };
-            });
-        },
-
-
-        extractContent(section, delimiter) {
-            const parts = section.split(delimiter);
-            if (parts.length < 2) {
-                return { remainingSection: section, extractedContent: '' };
+    methods: {
+        initAssetMap() {
+            console.log("Initializing asset map...");
+            try {
+                const imgContext = require.context('../assets/', false, /\.(jpg|jpeg|png|gif|svg)$/);
+                const audioContext = require.context('../assets/', false, /\.(mp3|wav|ogg|m4a|mp4)$/);
+                
+                imgContext.keys().forEach(key => {
+                    const fileName = key.replace('./', '');
+                    this.assetMap.set(this.getFileNameWithoutExtension(fileName), fileName);
+                });
+                
+                audioContext.keys().forEach(key => {
+                    const fileName = key.replace('./', '');
+                    this.assetMap.set(this.getFileNameWithoutExtension(fileName), fileName);
+                });
+                
+                console.log("Asset map initialized:", this.assetMap);
+            } catch (error) {
+                console.error("Error initializing asset map:", error);
             }
-            return { remainingSection: parts[1], extractedContent: parts[0].trim() };
         },
-
-        parseOriginContent() {
-            const articleSections = originContent.split('標題：'); // 根據標題分割
+        
+        getFileNameWithoutExtension(fileName) {
+            return fileName.split('.').slice(0, -1).join('.');
+        },
+        
+        getCorrectFileName(fileName) {
+            console.log(`Trying to get correct file name for: ${fileName}`);
+            if (fileName.includes('.')) {
+                console.log(`File name already has extension: ${fileName}`);
+                return fileName;
+            }
+            
+            const correctFileName = this.assetMap.get(fileName);
+            if (correctFileName) {
+                console.log(`Found correct file name: ${correctFileName}`);
+                return correctFileName;
+            } else {
+                console.warn(`No matching file found for: ${fileName}`);
+                return fileName;
+            }
+        },
+        
+        async loadAndParseContent() {
+            console.log("Loading and parsing content...");
+            try {
+                let content = await this.fixFileExtensions(originContent);
+                console.log("Fixed content:", content);
+                this.parseContent(content);
+            } catch (error) {
+                console.error('Error parsing content:', error);
+            }
+        },
+        
+        async fixFileExtensions(content) {
+            console.log("Fixing file extensions...");
+            const lines = content.split('\n');
+            const fixedLines = lines.map(line => {
+                console.log("Processing line:", line);
+                const match = line.match(/(圖片|音檔)：\s*(.+?)(?=\s*$)/);
+                if (match) {
+                    const [fullMatch, type, fileName] = match;
+                    console.log(`Matched: type=${type}, fileName=${fileName}`);
+                    const trimmedFileName = fileName.trim();
+                    const fixedFileName = this.getCorrectFileName(trimmedFileName);
+                    console.log(`${type}: ${trimmedFileName} -> ${fixedFileName}`);
+                    if (trimmedFileName !== fixedFileName) {
+                        const newLine = line.replace(fullMatch, `${type}：${fixedFileName}`);
+                        console.log("Line replaced:", newLine);
+                        return newLine;
+                    }
+                }
+                return line;
+            });
+            const result = fixedLines.join('\n');
+            console.log("Fixed content result:", result);
+            return result;
+        },
+        parseContent(content) {
+            const articleSections = content.split('標題：'); // 根據標題分割
             articleSections.forEach(section => {
                 if (section.trim() !== '') {
                     let oneArticle = {};
@@ -127,6 +173,37 @@ export const parsingFunctionMixin = {
                     this.$emit('articles-loaded', this.articles);
                 }
             });
+        },
+        formatTextAndUrl(text) {
+            const urlRegex = /(https?:\/\/[^\s,，。！？；：）)]+)/;
+            // const emailRegex = /^\w+((-\w+)|(\.\w+))*@[A-Za-z0-9]+((\.|-)[A-Za-z0-9]+)*\.[A-Za-z]+$/; // eslint-disable-line
+            const emailRegex = /(\b[A-Za-z0-9._%+-]+[@＠][A-Za-z0-9.-]+\.[A-Z|a-z]{2,}\b)/;
+            const hashTagRegex = /(#[^#]+#)/;
+            let parts = text.split(new RegExp(`${urlRegex.source}|${emailRegex.source}|${hashTagRegex.source}`)).filter(part => part);
+            return parts.map(part => {
+                if (urlRegex.test(part)) {
+                    return { type: 'link', content: part };
+                } else if (emailRegex.test(part)) {
+                    return { type: 'email', content: part };
+                } else if (hashTagRegex.test(part)) {
+                    return {type: 'hashTag', content: part.slice(1, -1) };
+                } else {
+                    return { type: 'text', content: part };
+                }
+                // return {
+                //     type: urlRegex.test(part) ? 'link' : 'text',
+                //     content: part
+                // };
+            });
+        },
+
+
+        extractContent(section, delimiter) {
+            const parts = section.split(delimiter);
+            if (parts.length < 2) {
+                return { remainingSection: section, extractedContent: '' };
+            }
+            return { remainingSection: parts[1], extractedContent: parts[0].trim() };
         },
     }
 }
