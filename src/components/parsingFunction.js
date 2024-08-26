@@ -8,39 +8,44 @@ export const parsingFunctionMixin = {
         }
     },
     async created() {
-        this.initAssetMap();
+        await this.initAssetMap();
         await this.loadAndParseContent();
     },
     methods: {
-        initAssetMap() {
+        async initAssetMap() {
             try {
                 const imgContext = require.context('../assets/', false, /\.(jpg|jpeg|png|gif|svg)$/);
                 const audioContext = require.context('../assets/', false, /\.(mp3|wav|ogg|m4a|mp4)$/);
-                
-                imgContext.keys().forEach(key => {
-                    const fileName = key.replace('./', '');
-                    this.assetMap.set(this.getFileNameWithoutExtension(fileName), fileName);
-                });
-                
-                audioContext.keys().forEach(key => {
-                    const fileName = key.replace('./', '');
-                    this.assetMap.set(this.getFileNameWithoutExtension(fileName), fileName);
-                });
-                
-                //console.log("Asset map initialized:", this.assetMap);
+
+                const processContext = (context) => {
+                    context.keys().forEach(key => {
+                        const fileName = key.replace('./', '');
+                        const nameWithoutExt = this.getFileNameWithoutExtension(fileName);
+                        this.assetMap.set(nameWithoutExt.toLowerCase(), fileName);
+                    });
+                };
+                processContext(imgContext);
+                processContext(audioContext);
+
             } catch (error) {
                 console.error("Error initializing asset map:", error);
             }
         },
-        
+
         getFileNameWithoutExtension(fileName) {
             return fileName.split('.').slice(0, -1).join('.');
         },
-        
+
         getCorrectFileName(fileName) {
-            return this.assetMap.get(fileName) || fileName;
+            const nameWithoutExt = this.getFileNameWithoutExtension(fileName).toLowerCase();
+            const correctFileName = this.assetMap.get(nameWithoutExt);
+            if (correctFileName) {
+                return correctFileName;
+            }
+            // 如果在 assetMap 中找不到，返回原始文件名
+            return fileName;
         },
-        
+
         async loadAndParseContent() {
             try {
                 let content = await this.fixFileExtensions(originContent);
@@ -49,7 +54,7 @@ export const parsingFunctionMixin = {
                 console.error('Error parsing content:', error);
             }
         },
-        
+
         async fixFileExtensions(content) {
             const lines = content.split('\n');
             const fixedLines = lines.map(line => {
@@ -57,18 +62,18 @@ export const parsingFunctionMixin = {
                 if (match) {
                     const [fullMatch, type, fileName] = match;
                     const trimmedFileName = fileName.trim();
-                    const fixedFileName = this.getCorrectFileName(trimmedFileName);
-                    if (trimmedFileName !== fixedFileName) {
-                        const newLine = line.replace(fullMatch, `${type}：${fixedFileName}`);
-                        return newLine;
+                    const correctedFileName = this.getCorrectFileName(trimmedFileName);
+                    if (correctedFileName !== trimmedFileName) {
+                        return line.replace(fullMatch, `${type}：${correctedFileName}`);
                     }
                 }
                 return line;
             });
             const result = fixedLines.join('\n');
-            //console.log("Fixed content result:", result);
+            console.log("Fixed content:", result); // 調試用
             return result;
         },
+
         parseContent(content) {
             const articleSections = content.split('標題：'); // 根據標題分割
             articleSections.forEach(section => {
@@ -166,7 +171,7 @@ export const parsingFunctionMixin = {
                 } else if (emailRegex.test(part)) {
                     return { type: 'email', content: part };
                 } else if (hashTagRegex.test(part)) {
-                    return {type: 'hashTag', content: part.slice(1, -1) };
+                    return { type: 'hashTag', content: part.slice(1, -1) };
                 } else {
                     return { type: 'text', content: part };
                 }
