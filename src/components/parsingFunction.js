@@ -33,12 +33,17 @@ export const parsingFunctionMixin = {
         },
 
         getFileNameWithoutExtension(fileName) {
-            return fileName.split('.').slice(0, -1).join('.');
+            const parts = fileName.split('.');
+            if (parts.length === 1) {
+                return fileName;
+            }
+            return parts.slice(0, -1).join('.');
         },
 
         getCorrectFileName(fileName) {
             const nameWithoutExt = this.getFileNameWithoutExtension(fileName).toLowerCase();
             const correctFileName = this.assetMap.get(nameWithoutExt);
+
             if (correctFileName) {
                 return correctFileName;
             }
@@ -70,7 +75,7 @@ export const parsingFunctionMixin = {
                 return line;
             });
             const result = fixedLines.join('\n');
-            console.log("Fixed content:", result); // 調試用
+            // console.log("Fixed content:", result); // 調試用
             return result;
         },
 
