@@ -3,19 +3,21 @@
         <div class="container-area ">
             <bannerTitle></bannerTitle>
             <img class="top-banner-picture" :src="require(`@/assets/TOP.jpg`)">
-            <div class="row banner-date">
-                <div class="col-sm-12 col-md-9">
-                    <span style="font-size:9pt">NCU HAKKA COLLEGE E-PAPER 第{{ paperId }}期{{ publishedDate }} 出刊／ 半月刊</span>
-                    <!-- 使用 HTML 字符實體 -->
-                    <!-- <p style="font-family: 'Huninn';">Heart Symbol: &#178374; or &#x2B8C6; or &#131726; or &#x2028E; or &#25678; or &#x644E;</p> -->
 
+            <div class="banner-date">
+                <div>
+                    <span>NCU HAKKA COLLEGE E-PAPER 第{{ paperId }}期{{ publishedDate }} 出刊／ 季刊</span>
                 </div>
-                <div class="col-sm-12 col-md-3">
-                    <span>瀏覽人次：</span>
-                    <a href="https://www.cutercounter.com/traditional-chinese-nn/" target="_blank"><img
-                            src="https://www.cutercounter.com/hits.php?id=hvxonank&nd=6&style=4" border="0" alt="免費計數器"></a>
+                <div class="counter-box">
+                    <span class="counter-label">瀏覽人次：</span>
+                    <a href="https://www.stylemap.co.jp/">
+                    <img src="https://www.f-counter.net/j/66/1758160903/"
+                        alt="訪問計數器"
+                        title="網站瀏覽人次">
+                    </a>
                 </div>
             </div>
+
             <div class="row cover-content" v-for="(article, index) in articles" :key="index">
                 <div class="col-sm-11 col-md-6 tl-left">
                     <img v-if="article.coverPicture" :src="require(`@/assets/${article.coverPicture}`)" class="img-block" alt="...">
@@ -51,6 +53,16 @@
     src: url('../fonts/GenSekiGothicJP-M-02.ttf') format("truetype");
 }
 
+.counter-box {
+  display: flex;
+  align-items: center;
+  white-space: nowrap;   /* prevent "瀏覽人次：" from wrapping */
+}
+
+.counter-label {
+  margin-right: 6px;
+}
+
 .top-banner-picture {
     width: 100%;
     height: auto;
@@ -58,11 +70,25 @@
 }
 
 .banner-date {
-    font-size: 9pt;
-    background-color: black;
-    color: white;
-    padding: 20px;
-    margin: 0px 0px 40px 0px;
+  font-size: 9pt;
+  background-color: black;
+  color: white;
+  padding: 20px;
+  margin: 0px 0px 40px 0px;
+
+  display: flex;                  /* 水平排列 */
+  justify-content: space-between; /* 左右分散 */
+  align-items: center;            /* 垂直置中 */
+}
+
+.counter-box {
+  display: flex;
+  align-items: center; /* 讓「瀏覽人次」跟圖片垂直置中 */
+  white-space: nowrap; /* 避免自動換行 */
+}
+
+.counter-label {
+  margin-right: 6px;
 }
 
 .container-area {
@@ -127,6 +153,7 @@
     margin: 17px 30px!important;
 }
 </style>
+
 <script>
 import bannerTitle from '@/components/banner.vue'
 import homeBottom from '@/components/homeBottom.vue'
@@ -140,16 +167,12 @@ export default {
         bannerBottom
     },
     mixins: [parsingFunctionMixin],
-   
+
     data() {
         return {
             paperId: process.env.VUE_APP_PAPER_ID,
             publishedDate: process.env.VUE_APP_PUBLISHED_DATE,
         }
     },
-
-
 }
 </script>
-  
-

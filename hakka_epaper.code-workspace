@@ -1,0 +1,15 @@
+{
+	"folders": [
+		{
+			"path": "."
+		}
+	],
+	"settings": {},
+    "configurations": [
+        {
+            "env": {
+              "HF_TOKEN": "${env:HF_TOKEN}"
+            }
+        }
+    ]
+}

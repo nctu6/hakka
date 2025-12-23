@@ -3,24 +3,23 @@
         <div class="overlay-w3l mid-content">
             <p class="bottom-para">
                 <a> ◆ 發行單位&emsp;／ 國立中央大學客家學院</a> <br>
-                <a> ◆ 榮譽發行人／ 周景揚校長</a> <br>
+                <a> ◆ 榮譽發行人／ 蕭述三校長</a> <br>
                 <a> ◆ 發&emsp;行&emsp;人／ 鍾國允院長</a> <br>
                 <a> ◆ 編輯顧問&emsp;／
                     王保鍵老師、周錦宏老師、<br>
                     &emsp;姜貞吟老師、張翰璧老師、陳秀琪老師、<br>
-                    &emsp;湯晏甄老師、黃菊芳老師、黃雯君老師、<br>
-                    &emsp;廖長彥老師、劉小蘭老師、蔡芬芳老師、<br>
-                    &emsp;鄭曉峯老師、賴守誠老師、賴維凱老師、<br>
-                    &emsp;鍾國允老師、羅肇錦老師。<br>
+                    &emsp;黃菊芳老師、黃雯君老師、劉小蘭老師、<br>
+                    &emsp;蔡芬芳老師、鄭曉峯老師、賴守誠老師、<br>
+                    &emsp;賴維凱老師、鍾國允老師、羅肇錦老師。<br>
                     &emsp;（依姓氏筆畫排序）</a> <br>
                 <a> ◆ 主&emsp;&emsp;&emsp;編／ 鍾國允院長</a> <br>
-                <a> ◆ 執行編輯&emsp;／ 黃菊芳系主任、邱一帆老師</a> <br>
-                <a> ◆ 編&emsp;輯&emsp;群／ 彭淑姿、彭賢明、劉虹均、<br>
-                    &emsp;蔡嫈婷、賴亞華、羅玉芝。<br>
+                <a> ◆ 執行編輯&emsp;／ 黃雯君老師、邱一帆老師</a> <br>
+                <a> ◆ 編&emsp;輯&emsp;群／ 林苡嘉、彭淑姿、彭賢明、<br>
+                    &emsp;楊翊庭、蔡嫈婷、賴亞華。<br>
                     &emsp;（依姓氏筆畫排序）</a> <br>
                 <a> ◆ 刊頭攝影&emsp;／ 廖千慧</a> <br>
-                <a> ◆ 網頁製作&emsp;／ 呂學昊</a> <br>
-                <a> ◆ 連絡電話&emsp;／ 03-4257151#33480</a> <br>
+                <a> ◆ 網頁製作&emsp;／ 黃雯君老師</a> <br>
+                <a> ◆ 連絡電話&emsp;／ 03-42257151#33483</a> <br>
             </p>
         </div>
     </div>
@@ -42,11 +41,11 @@
         </div>
         <hr>
         <div>
-            <p class="bottom-edit">&copy; 2023 New Edition Design by 呂學昊</p>
+            <p class="bottom-edit">&copy; 2025 New Edition Design by 客家系</p>
         </div>
     </div>
 </template>
-  
+
 <script>
 export default {
     name: 'BannerBottom',
@@ -123,4 +122,3 @@ export default {
 }
 
 @media screen and (max-width:736px) {}</style>
-  

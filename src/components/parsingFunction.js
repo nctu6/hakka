@@ -120,7 +120,18 @@ export const parsingFunctionMixin = {
                     // 处理文章内容
                     const contentItems = [];
                     section.split('\n').forEach(line => {
-                        const mediaMatch = line.match(/(圖片|影片)：\s*([\w-]+\.(jpg|jpeg|png|gif|bmp|wav|mp4|avi|mov|mpeg|mpg))(?:\s*([（(].*[)）]))?/
+                        const trimmedLine = line.trim();
+                        const bareImageMatch = trimmedLine.match(
+                            /^([\w-]+\.(jpg|jpeg|png|gif|svg))$/i
+                        );
+                        if (bareImageMatch) {
+                            contentItems.push({
+                                type: 'image',
+                                content: bareImageMatch[1]
+                            });
+                            return;
+                        }
+                        const mediaMatch = trimmedLine.match(/(圖片|影片)：\s*([\w-]+\.(jpg|jpeg|png|gif|bmp|wav|mp4|avi|mov|mpeg|mpg))(?:\s*([（(].*[)）]))?/
                         );
                         if (mediaMatch) {
                             const type = mediaMatch[1] === '圖片' ? 'image' : 'video';
